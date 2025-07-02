@@ -1,0 +1,19 @@
+FROM python:3.10-slim
+
+# Cài các công cụ cần thiết
+RUN apt-get update && apt-get install -y \
+    tesseract-ocr \
+    tesseract-ocr-vie \
+    tesseract-ocr-eng \
+    ghostscript \
+    libgl1 \
+    poppler-utils \
+    && apt-get clean
+
+# Cài Python packages
+WORKDIR /app
+COPY . /app
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Chạy ứng dụng
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
